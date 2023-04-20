@@ -34,3 +34,12 @@ Se mostrará un menú, el cual dara al usuario escoger diferentes salidas, tales
 
 - Mostrar la cantidad de personas según  estado civil (Soltero/a - Casado/a).
 
+
+**Errores observados en el código:**
+
+- Demasiado código en el main, no hay división por métodos.
+- Errores sintácticos
+- Conflicto con los tipos de datos
+- Nombre de variables no representativos
+
+
