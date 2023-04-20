@@ -15,7 +15,7 @@ public class Registro {
 
     private static void procesarOpcionIngresada(String[][] registro, int opcionIngresada) {
         switch (opcionIngresada) {
-            case 1 -> opcionUno(registro);
+            case 1 -> agregarPersona(registro);
             case 2 -> opcionDos(registro);
             case 3 -> opcionTres(registro);
             case 4 -> opcionCuatro(registro);
@@ -77,49 +77,28 @@ public class Registro {
         System.out.println("Hay " + mayoresDeEdad + " mayores de edad.");
     }
 
-    private static void opcionUno(String[][] registro) {
+    private static void agregarPersona(String[][] registro) {
         if (hayCupo(registro)) {
             int indiceDisponible = obtenerUltimoEspacio(registro);
-            String nombre;
-            String Estadocivil;
-            int edad;
-
-            while (true) {
-                try {
-                    nombre = new Scanner(System.in).nextLine();
-                } catch (InputMismatchException e) {
-                    System.err.println("Opción inválida");
-                    continue;
-                }
-                break;
-            }
-
-            while (true) {
-                try {
-                    Estadocivil = new Scanner(System.in).nextLine();
-                } catch (InputMismatchException e) {
-                    System.err.println("Opción inválida");
-                    continue;
-                }
-                break;
-            }
-
-            while (true) {
-                try {
-                    edad = new Scanner(System.in).nextLine();
-                } catch (InputMismatchException e) {
-                    System.err.println("Opción inválida");
-                    continue;
-                }
-                break;
-            }
+            String nombre = ingresarDato();
+            String estadocivil = ingresarDato();
+            String edad = ingresarDato();
 
             registro[indiceDisponible][0] = nombre;
-            registro[indiceDisponible][1] = Estadocivil;
+            registro[indiceDisponible][1] = estadocivil;
             registro[indiceDisponible][2] = edad;
             System.out.println("Persona agregada.");
         } else {
             System.out.println("No hay cupo.");
+        }
+    }
+
+    private static String ingresarDato() {
+        try {
+            return new Scanner(System.in).nextLine();
+        } catch (InputMismatchException e) {
+            System.err.println("Opción inválida, vuelva a intentarlo");
+            return ingresarDato();
         }
     }
 
@@ -152,7 +131,7 @@ public class Registro {
                 """);
     }
 
-    public static int obtenerUltimoEspacio(double[][] registro) {
+    public static int obtenerUltimoEspacio(String[][] registro) {
         return registro.length - opa(registro);
     }
 
