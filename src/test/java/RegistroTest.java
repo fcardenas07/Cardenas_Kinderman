@@ -1,10 +1,19 @@
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class RegistroTest {
 
+    String[][] registro = new String[50][3];
+
+    @BeforeEach
+    void setUp() {
+        registro[0] = new String[]{"Juan", "Casado", "30"};
+        registro[1] = new String[]{"Pedro", "Soltero", "15"};
+        registro[2] = new String[]{"Diego", "Casado", "40"};
+    }
 
     @Test
     void opcionCinco() {
@@ -28,25 +37,18 @@ class RegistroTest {
 
     @Test
     void obtenerUltimoEspacioTest() {
-        String[][] registro = new String[50][3];
-        registro[0] = new String[]{"Juan Perez", "Casado", "30"};
-        assertEquals(1,Registro.obtenerUltimoEspacio(registro));
-
-
+        assertEquals(3,Registro.obtenerUltimoEspacio(registro));
     }
 
     @Test
     void hayCupoTest() {
-        String[][] registro = new String[50][3];
-        registro[0] = new String[]{"Juan Perez", "Casado", "30"};
         assertTrue(Registro.hayCupo(registro));
 
     }
 
     @Test
     void retornarFilaVaciaTest() {
-        String[][] registro = new String[50][3];
-        registro[0] = new String[]{"Juan Perez", "Casado", "30"};
-        assertEquals(1,Registro.retornarFilaVacia(registro));
+
+        assertEquals(3,Registro.retornarFilaVacia(registro));
     }
 }
