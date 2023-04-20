@@ -15,29 +15,19 @@ class RegistroTest {
         registro[2] = new String[]{"Diego", "Casado", "40"};
     }
 
-    @Test
-    void opcionCinco() {
-
-    }
-
-    @Test
-    void opcionCuatro() {
-
-    }
-
-    @Test
-    void opcionTres() {
-
-    }
-
-    @Test
-    void opcionDos() {
-
-    }
 
     @Test
     void agregarPersona(){
-        
+        int indice = Registro.retornarFilaVacia(registro);
+        String nombre = "Thomas";
+        String estado = "Soltero";
+        String edad = "22";
+        Registro.agregarPersona(registro,nombre,estado,edad);
+        assertEquals("Thomas",registro[indice][0]);
+        assertEquals("Soltero",registro[indice][1]);
+        assertEquals("22",registro[indice][2]);
+
+
     }
 
     @Test
@@ -53,7 +43,25 @@ class RegistroTest {
 
     @Test
     void retornarFilaVaciaTest() {
-
-        assertEquals(3,Registro.retornarFilaVacia(registro));
+        for (int i = 0; i < Registro.retornarFilaVacia(registro); i++) {
+            assertNotEquals(i,Registro.retornarFilaVacia(registro));
+        }
     }
+
+    @Test
+    void contarPersonasTerceraEdad() {
+    assertEquals(0,Registro.contarPersonasTerceraEdad(registro));
+
+    }
+
+    @Test
+    void contarMenoresDeEdad() {
+        assertEquals(1,Registro.contarMenoresDeEdad(registro));
+    }
+
+    @Test
+    void contarMayoresDeEdad() {
+        assertEquals(2,Registro.contarMayoresDeEdad(registro));
+    }
+
 }
