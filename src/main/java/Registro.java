@@ -16,7 +16,7 @@ public class Registro {
     private static void procesarOpcionIngresada(String[][] registro, int opcionIngresada) {
         switch (opcionIngresada) {
             case 1 -> agregarPersona(registro);
-            case 2 -> opcionDos(registro);
+            case 2 -> mostrarPersonasMayoresDeEdad(registro);
             case 3 -> opcionTres(registro);
             case 4 -> opcionCuatro(registro);
             case 5 -> opcionCinco(registro);
@@ -44,16 +44,17 @@ public class Registro {
     }
 
     private static void opcionCuatro(String[][] registro) {
-        int mmmm = 0;
+        int contador = 0;
 
         for (String[] persona : registro) {
-            if (persona[2] >= 60 && persona[1].equals("casado/a")) {
-                mmmm++;
-            } else if (persona[2] >= 65 && persona[1].equals("soltero/a")) {
-                mmmm++;
+             int edad = Integer.parseInt(persona[2]);
+            if (edad >= 60 && persona[1].equals("casado/a")) {
+                contador++;
+            } else if (edad >= 65 && persona[1].equals("soltero/a")) {
+                contador++;
             }
         }
-        System.out.println("Hay " + mmmm + " personas de tercera edad");
+        System.out.println("Hay " + contador + " personas de tercera edad");
     }
 
     private static void opcionTres(String[][] registro) {
@@ -61,17 +62,19 @@ public class Registro {
         int queSera = obtenerUltimoEspacio(registro);
 
         for (int i = 0; i < queSera; i++) {
-            if (registro[i][2] < 18) menoresDeEdad++;
+             int edad = Integer.parseInt(registro[i][2]);
+            if (edad < 18) menoresDeEdad++;
         }
 
         System.out.println("Hay " + menoresDeEdad + " menores de edad.");
     }
 
-    private static void opcionDos(String[][] registro) {
+    private static void mostrarPersonasMayoresDeEdad(String[][] registro) {
         int mayoresDeEdad = 0;
 
         for (String[] persona : registro) {
-            if (persona[2] >= 18) mayoresDeEdad++;
+             int edad = Integer.parseInt(persona[2]);
+            if (edad >= 18) mayoresDeEdad++;
         }
 
         System.out.println("Hay " + mayoresDeEdad + " mayores de edad.");
@@ -82,7 +85,7 @@ public class Registro {
             int indiceDisponible = obtenerUltimoEspacio(registro);
             String nombre = ingresarDato();
             String estadocivil = ingresarDato();
-            String edad = ingresarDato();
+            String edad = String.valueOf(validarEdad(convertirEdadAInt(ingresarDato())));
 
             registro[indiceDisponible][0] = nombre;
             registro[indiceDisponible][1] = estadocivil;
@@ -91,6 +94,27 @@ public class Registro {
         } else {
             System.out.println("No hay cupo.");
         }
+    }
+
+    private static boolean noEsEdadValida(int edad) {
+        return edad < 0 || edad > 200;
+    }
+
+    private static int convertirEdadAInt(String edadIngresada) {
+        try {
+            return validarEdad(Integer.parseInt(edadIngresada));
+        } catch (NumberFormatException e) {
+            System.out.println("Edad no valida, vuelva a intentarlo");
+            return convertirEdadAInt(ingresarDato());
+        }
+    }
+
+    private static int validarEdad(int edad) {
+        if (noEsEdadValida(edad)) {
+            System.out.println("Edad no valida, vuelva a intentarlo");
+            return convertirEdadAInt(ingresarDato());
+        }
+        return edad;
     }
 
     private static String ingresarDato() {
