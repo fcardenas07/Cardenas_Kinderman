@@ -8,12 +8,12 @@ public class Registro {
         menu(registro);
     }
 
-    private static void menu(String[][] registro) {
+    public static void menu(String[][] registro) {
         mostrarMenu();
         procesarOpcionIngresada(registro, ingresarOpcion());
     }
 
-    private static void procesarOpcionIngresada(String[][] registro, int opcionIngresada) {
+    public static void procesarOpcionIngresada(String[][] registro, int opcionIngresada) {
         switch (opcionIngresada) {
             case 1 -> agregarPersona(registro);
             case 2 -> opcionDos(registro);
@@ -24,11 +24,11 @@ public class Registro {
         }
     }
 
-    private static void salir() {
+    public static void salir() {
         System.exit(0);
     }
 
-    private static void opcionCinco(String[][] registro) {
+    public static void opcionCinco(String[][] registro) {
         int c = 0;
         int d = 0;
         for (String[] persona : registro) {
@@ -43,7 +43,7 @@ public class Registro {
         System.out.println("Hay " + c + " solteros/as.");
     }
 
-    private static void opcionCuatro(String[][] registro) {
+    public static void opcionCuatro(String[][] registro) {
         int mmmm = 0;
 
         for (String[] persona : registro) {
@@ -56,7 +56,7 @@ public class Registro {
         System.out.println("Hay " + mmmm + " personas de tercera edad");
     }
 
-    private static void opcionTres(String[][] registro) {
+    public static void opcionTres(String[][] registro) {
         int menoresDeEdad = 0;
         int queSera = obtenerUltimoEspacio(registro);
 
@@ -67,7 +67,7 @@ public class Registro {
         System.out.println("Hay " + menoresDeEdad + " menores de edad.");
     }
 
-    private static void opcionDos(String[][] registro) {
+    public static void opcionDos(String[][] registro) {
         int mayoresDeEdad = 0;
 
         for (String[] persona : registro) {
@@ -77,7 +77,7 @@ public class Registro {
         System.out.println("Hay " + mayoresDeEdad + " mayores de edad.");
     }
 
-    private static void agregarPersona(String[][] registro) {
+    public static void agregarPersona(String[][] registro) {
         if (hayCupo(registro)) {
             int indiceDisponible = obtenerUltimoEspacio(registro);
             String nombre = ingresarDato();
@@ -93,7 +93,7 @@ public class Registro {
         }
     }
 
-    private static String ingresarDato() {
+    public static String ingresarDato() {
         try {
             return new Scanner(System.in).nextLine();
         } catch (InputMismatchException e) {
@@ -102,7 +102,7 @@ public class Registro {
         }
     }
 
-    private static int validarOpcionIngresada(int opcionIngresada) {
+    public static int validarOpcionIngresada(int opcionIngresada) {
         if (opcionIngresada < 1 || opcionIngresada > 6) {
             System.out.println("Opción inválida, vuelva a intentarlo");
             return ingresarOpcion();
@@ -110,7 +110,7 @@ public class Registro {
         return opcionIngresada;
     }
 
-    private static int ingresarOpcion() {
+    public static int ingresarOpcion() {
         try {
             return validarOpcionIngresada(new Scanner(System.in).nextInt());
         } catch (InputMismatchException e) {
@@ -119,7 +119,7 @@ public class Registro {
         }
     }
 
-    private static void mostrarMenu() {
+    public static void mostrarMenu() {
         System.out.println("""
                 Menú
                 1) Agregar persona.
