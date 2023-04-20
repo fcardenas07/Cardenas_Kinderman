@@ -30,19 +30,30 @@ public class Registro {
     }
 
     private static void mostrarPersonasPorEstadoCivil(String[][] registro) {
+        System.out.println("Hay " + contarCasados(registro) + " casados/as.");
+        System.out.println("Hay " + contarSolteros(registro) + " solteros/as.");
+    }
+
+    public static int contarCasados(String[][] registro) {
         int casados = 0;
+
+        for (int i = 0; i < cantidadDePersonasRegistradas(registro); i++) {
+            if (registro[i][1].equals("casado/a")) {
+                casados++;
+            }
+        }
+        return casados;
+    }
+
+    public static int contarSolteros(String[][] registro) {
         int solteros = 0;
 
-        for (String[] persona : registro) {
-            if (persona[1].equals("casado/a")) {
-                casados++;
-            } else if (persona[1].equals("soltero/a")) {
+        for (int i = 0; i < cantidadDePersonasRegistradas(registro); i++) {
+            if (registro[i][1].equals("soltero/a")) {
                 solteros++;
             }
         }
-
-        System.out.println("Hay " + solteros + " casados/as.");
-        System.out.println("Hay " + casados + " solteros/as.");
+        return solteros;
     }
 
     private static void mostrarPersonasTerceraEdad(String[][] registro) {

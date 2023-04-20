@@ -41,7 +41,3 @@ Se mostrará un menú, el cual dara al usuario escoger diferentes salidas, tales
 - Errores sintácticos
 - Conflicto con los tipos de datos
 - Nombre de variables no representativos
-
-
-* Por Hacer
-  * Cambiar comparación null retornarFilaVacia
