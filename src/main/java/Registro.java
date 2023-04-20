@@ -8,81 +8,93 @@ public class Registro {
         menu(registro);
     }
 
-    public static void menu(String[][] registro) {
+    private static void menu(String[][] registro) {
         mostrarMenu();
         procesarOpcionIngresada(registro, ingresarOpcion());
     }
 
-    public static void procesarOpcionIngresada(String[][] registro, int opcionIngresada) {
+    private static void procesarOpcionIngresada(String[][] registro, int opcionIngresada) {
         switch (opcionIngresada) {
             case 1 -> agregarPersona(registro);
-            case 2 -> opcionDos(registro);
-            case 3 -> opcionTres(registro);
-            case 4 -> opcionCuatro(registro);
-            case 5 -> opcionCinco(registro);
+            case 2 -> mostrarPersonasMayoresDeEdad(registro);
+            case 3 -> mostrarPersonaMenoresDeEdad(registro);
+            case 4 -> mostrarPersonasTerceraEdad(registro);
+            case 5 -> mostrarPersonasPorEstadoCivil(registro);
             case 6 -> salir();
         }
     }
 
-    public static void salir() {
+    private static void salir() {
         System.exit(0);
     }
 
-    public static void opcionCinco(String[][] registro) {
-        int c = 0;
-        int d = 0;
+    private static void mostrarPersonasPorEstadoCivil(String[][] registro) {
+        int casados = 0;
+        int solteros = 0;
+
         for (String[] persona : registro) {
             if (persona[1].equals("casado/a")) {
-                c++;
+                casados++;
             } else if (persona[1].equals("soltero/a")) {
-                d++;
+                solteros++;
             }
         }
 
-        System.out.println("Hay " + d + " casados/as.");
-        System.out.println("Hay " + c + " solteros/as.");
+        System.out.println("Hay " + solteros + " casados/as.");
+        System.out.println("Hay " + casados + " solteros/as.");
     }
 
-    public static void opcionCuatro(String[][] registro) {
-        int mmmm = 0;
+    private static void mostrarPersonasTerceraEdad(String[][] registro) {
+        System.out.println("Hay " + contarPersonasTerceraEdad(registro) + " personas de tercera edad");
+    }
+
+    private static void mostrarPersonaMenoresDeEdad(String[][] registro) {
+        System.out.println("Hay " + contarMenoresDeEdad(registro) + " menores de edad.");
+    }
+
+    private static void mostrarPersonasMayoresDeEdad(String[][] registro) {
+        System.out.println("Hay " + contarMayoresDeEdad(registro) + " mayores de edad.");
+    }
+
+    private static int contarPersonasTerceraEdad(String[][] registro) {
+        int personasTerceraEdad = 0;
 
         for (String[] persona : registro) {
-            if (persona[2] >= 60 && persona[1].equals("casado/a")) {
-                mmmm++;
-            } else if (persona[2] >= 65 && persona[1].equals("soltero/a")) {
-                mmmm++;
+            int edad = Integer.parseInt(persona[2]);
+            if (edad >= 60) {
+                personasTerceraEdad++;
             }
         }
-        System.out.println("Hay " + mmmm + " personas de tercera edad");
+        return personasTerceraEdad;
     }
 
-    public static void opcionTres(String[][] registro) {
+    private static int contarMenoresDeEdad(String[][] registro) {
         int menoresDeEdad = 0;
         int queSera = obtenerUltimoEspacio(registro);
 
         for (int i = 0; i < queSera; i++) {
-            if (registro[i][2] < 18) menoresDeEdad++;
+            int edad = Integer.parseInt(registro[i][2]);
+            if (edad < 18) menoresDeEdad++;
         }
-
-        System.out.println("Hay " + menoresDeEdad + " menores de edad.");
+        return menoresDeEdad;
     }
 
-    public static void opcionDos(String[][] registro) {
+    private static int contarMayoresDeEdad(String[][] registro) {
         int mayoresDeEdad = 0;
 
         for (String[] persona : registro) {
-            if (persona[2] >= 18) mayoresDeEdad++;
+            int edad = Integer.parseInt(persona[2]);
+            if (edad >= 18) mayoresDeEdad++;
         }
-
-        System.out.println("Hay " + mayoresDeEdad + " mayores de edad.");
+        return mayoresDeEdad;
     }
 
-    public static void agregarPersona(String[][] registro) {
+    private static void agregarPersona(String[][] registro) {
         if (hayCupo(registro)) {
             int indiceDisponible = obtenerUltimoEspacio(registro);
             String nombre = ingresarDato();
-            String estadocivil = ingresarDato();
-            String edad = ingresarDato();
+            String estadocivil = ingresarEstadoCivil();
+            String edad = String.valueOf(validarEdad(convertirEdadAInt(ingresarDato())));
 
             registro[indiceDisponible][0] = nombre;
             registro[indiceDisponible][1] = estadocivil;
@@ -93,7 +105,49 @@ public class Registro {
         }
     }
 
-    public static String ingresarDato() {
+    private static String ingresarEstadoCivil() {
+        mostrarOpcionesEstadoCivil();
+        int opcionIngresada = validarOpcionIngresada(ingresarOpcion(), 3);
+        return asignarEstado(opcionIngresada);
+    }
+
+    private static String asignarEstado(int opcionIngresada) {
+        if (opcionIngresada == 1) return "casado/a";
+        if (opcionIngresada == 2) return "soltero/a";
+        return "Otro";
+    }
+
+    private static void mostrarOpcionesEstadoCivil() {
+        System.out.println("""
+                Seleccione su estado civil:
+                1. Casado/a
+                2. Soltero/a
+                3. Otro
+                """);
+    }
+
+    private static boolean noEsEdadValida(int edad) {
+        return edad < 0 || edad > 200;
+    }
+
+    private static int convertirEdadAInt(String edadIngresada) {
+        try {
+            return validarEdad(Integer.parseInt(edadIngresada));
+        } catch (NumberFormatException e) {
+            System.out.println("Edad no valida, vuelva a intentarlo");
+            return convertirEdadAInt(ingresarDato());
+        }
+    }
+
+    private static int validarEdad(int edad) {
+        if (noEsEdadValida(edad)) {
+            System.out.println("Edad no valida, vuelva a intentarlo");
+            return convertirEdadAInt(ingresarDato());
+        }
+        return edad;
+    }
+
+    private static String ingresarDato() {
         try {
             return new Scanner(System.in).nextLine();
         } catch (InputMismatchException e) {
@@ -102,24 +156,24 @@ public class Registro {
         }
     }
 
-    public static int validarOpcionIngresada(int opcionIngresada) {
-        if (opcionIngresada < 1 || opcionIngresada > 6) {
+    private static int validarOpcionIngresada(int opcionIngresada, int cantidadOpciones) {
+        if (opcionIngresada < 1 || opcionIngresada > cantidadOpciones) {
             System.out.println("Opción inválida, vuelva a intentarlo");
             return ingresarOpcion();
         }
         return opcionIngresada;
     }
 
-    public static int ingresarOpcion() {
+    private static int ingresarOpcion() {
         try {
-            return validarOpcionIngresada(new Scanner(System.in).nextInt());
+            return validarOpcionIngresada(new Scanner(System.in).nextInt(), 6);
         } catch (InputMismatchException e) {
             System.err.println("Opción inválida, vuelva a intentarlo");
             return ingresarOpcion();
         }
     }
 
-    public static void mostrarMenu() {
+    private static void mostrarMenu() {
         System.out.println("""
                 Menú
                 1) Agregar persona.
@@ -141,7 +195,7 @@ public class Registro {
 
     public static int retornarFilaVacia(String[][] registro) {
         for (int i = 0; i < registro.length; i++) {
-            if (registro[i][0].equals("")) {
+            if (registro[i][0] == null) {
                 return registro.length - i;
             }
         }
