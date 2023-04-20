@@ -23,6 +23,7 @@ public class Registro {
             case 5 -> mostrarPersonasPorEstadoCivil(registro);
             case 6 -> salir();
         }
+        menu(registro);
     }
 
     public static void salir() {
@@ -207,8 +208,7 @@ public class Registro {
                 3) Mostrar la cantidad de personas menores de edad.
                 4) Mostrar la cantidad de personas de tercera edad.
                 5) Mostrar la cantidad de personas según estado civil (Soltero/a - Casado/a).
-                6)Salir.
-                """);
+                6) Salir.""");
     }
 
     public static int cantidadDePersonasRegistradas(String[][] registro) {
