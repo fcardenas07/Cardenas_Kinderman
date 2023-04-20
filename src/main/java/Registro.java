@@ -17,9 +17,9 @@ public class Registro {
         switch (opcionIngresada) {
             case 1 -> agregarPersona(registro);
             case 2 -> mostrarPersonasMayoresDeEdad(registro);
-            case 3 -> opcionTres(registro);
-            case 4 -> opcionCuatro(registro);
-            case 5 -> opcionCinco(registro);
+            case 3 -> mostrarPersonaMenoresDeEdad(registro);
+            case 4 -> mostrarPersonasTerceraEdad(registro);
+            case 5 -> mostrarPersonasPorEstadoCivil(registro);
             case 6 -> salir();
         }
     }
@@ -28,63 +28,72 @@ public class Registro {
         System.exit(0);
     }
 
-    private static void opcionCinco(String[][] registro) {
-        int c = 0;
-        int d = 0;
+    private static void mostrarPersonasPorEstadoCivil(String[][] registro) {
+        int casados = 0;
+        int solteros = 0;
+
         for (String[] persona : registro) {
             if (persona[1].equals("casado/a")) {
-                c++;
+                casados++;
             } else if (persona[1].equals("soltero/a")) {
-                d++;
+                solteros++;
             }
         }
 
-        System.out.println("Hay " + d + " casados/as.");
-        System.out.println("Hay " + c + " solteros/as.");
+        System.out.println("Hay " + solteros + " casados/as.");
+        System.out.println("Hay " + casados + " solteros/as.");
     }
 
-    private static void opcionCuatro(String[][] registro) {
-        int contador = 0;
+    private static void mostrarPersonasTerceraEdad(String[][] registro) {
+        System.out.println("Hay " + contarPersonasTerceraEdad(registro) + " personas de tercera edad");
+    }
+
+    private static void mostrarPersonaMenoresDeEdad(String[][] registro) {
+        System.out.println("Hay " + contarMenoresDeEdad(registro) + " menores de edad.");
+    }
+
+    private static void mostrarPersonasMayoresDeEdad(String[][] registro) {
+        System.out.println("Hay " + contarMayoresDeEdad(registro) + " mayores de edad.");
+    }
+
+    private static int contarPersonasTerceraEdad(String[][] registro) {
+        int personasTerceraEdad = 0;
 
         for (String[] persona : registro) {
-             int edad = Integer.parseInt(persona[2]);
-            if (edad >= 60 && persona[1].equals("casado/a")) {
-                contador++;
-            } else if (edad >= 65 && persona[1].equals("soltero/a")) {
-                contador++;
+            int edad = Integer.parseInt(persona[2]);
+            if (edad >= 60) {
+                personasTerceraEdad++;
             }
         }
-        System.out.println("Hay " + contador + " personas de tercera edad");
+        return personasTerceraEdad;
     }
 
-    private static void opcionTres(String[][] registro) {
+    private static int contarMenoresDeEdad(String[][] registro) {
         int menoresDeEdad = 0;
         int queSera = obtenerUltimoEspacio(registro);
 
         for (int i = 0; i < queSera; i++) {
-             int edad = Integer.parseInt(registro[i][2]);
+            int edad = Integer.parseInt(registro[i][2]);
             if (edad < 18) menoresDeEdad++;
         }
-
-        System.out.println("Hay " + menoresDeEdad + " menores de edad.");
+        return menoresDeEdad;
     }
 
-    private static void mostrarPersonasMayoresDeEdad(String[][] registro) {
+    private static int contarMayoresDeEdad(String[][] registro) {
         int mayoresDeEdad = 0;
 
         for (String[] persona : registro) {
-             int edad = Integer.parseInt(persona[2]);
+            int edad = Integer.parseInt(persona[2]);
             if (edad >= 18) mayoresDeEdad++;
         }
-
-        System.out.println("Hay " + mayoresDeEdad + " mayores de edad.");
+        return mayoresDeEdad;
     }
 
     private static void agregarPersona(String[][] registro) {
         if (hayCupo(registro)) {
             int indiceDisponible = obtenerUltimoEspacio(registro);
             String nombre = ingresarDato();
-            String estadocivil = ingresarDato();
+            String estadocivil = ingresarEstadoCivil();
             String edad = String.valueOf(validarEdad(convertirEdadAInt(ingresarDato())));
 
             registro[indiceDisponible][0] = nombre;
@@ -94,6 +103,27 @@ public class Registro {
         } else {
             System.out.println("No hay cupo.");
         }
+    }
+
+    private static String ingresarEstadoCivil() {
+        mostrarOpcionesEstadoCivil();
+        int opcionIngresada = validarOpcionIngresada(ingresarOpcion(), 3);
+        return asignarEstado(opcionIngresada);
+    }
+
+    private static String asignarEstado(int opcionIngresada) {
+        if (opcionIngresada == 1) return "casado/a";
+        if (opcionIngresada == 2) return "soltero/a";
+        return "Otro";
+    }
+
+    private static void mostrarOpcionesEstadoCivil() {
+        System.out.println("""
+                Seleccione su estado civil:
+                1. Casado/a
+                2. Soltero/a
+                3. Otro
+                """);
     }
 
     private static boolean noEsEdadValida(int edad) {
@@ -126,8 +156,8 @@ public class Registro {
         }
     }
 
-    private static int validarOpcionIngresada(int opcionIngresada) {
-        if (opcionIngresada < 1 || opcionIngresada > 6) {
+    private static int validarOpcionIngresada(int opcionIngresada, int cantidadOpciones) {
+        if (opcionIngresada < 1 || opcionIngresada > cantidadOpciones) {
             System.out.println("Opción inválida, vuelva a intentarlo");
             return ingresarOpcion();
         }
@@ -136,7 +166,7 @@ public class Registro {
 
     private static int ingresarOpcion() {
         try {
-            return validarOpcionIngresada(new Scanner(System.in).nextInt());
+            return validarOpcionIngresada(new Scanner(System.in).nextInt(), 6);
         } catch (InputMismatchException e) {
             System.err.println("Opción inválida, vuelva a intentarlo");
             return ingresarOpcion();
@@ -165,7 +195,7 @@ public class Registro {
 
     public static int retornarFilaVacia(String[][] registro) {
         for (int i = 0; i < registro.length; i++) {
-            if (registro[i][0].equals("")) {
+            if (registro[i][0] == null) {
                 return registro.length - i;
             }
         }
