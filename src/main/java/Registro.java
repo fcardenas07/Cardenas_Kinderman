@@ -95,8 +95,12 @@ public class Registro {
         if (hayCupo(registro)) {
             int indiceDisponible = retornarFilaVacia(registro);
 
+            System.out.println("Ingrese su nombre:");
             String nombre = ingresarDato();
+
             String estadocivil = ingresarEstadoCivil();
+
+            System.out.println("Ingrese su edad");
             String edad = String.valueOf(validarEdad(convertirEdadAInt(ingresarDato())));
 
             registro[indiceDisponible][0] = nombre;
@@ -152,11 +156,19 @@ public class Registro {
 
     private static String ingresarDato() {
         try {
-            return new Scanner(System.in).nextLine();
+            return validarTextoIngresado(new Scanner(System.in).nextLine());
         } catch (InputMismatchException e) {
             System.err.println("Opción inválida, vuelva a intentarlo");
             return ingresarDato();
         }
+    }
+
+    private static String validarTextoIngresado(String textoIngresado) {
+        if (textoIngresado.isBlank()) {
+            System.out.println("Debe ingresar un texto valido, vuelva a intentarlo");
+            return ingresarDato();
+        }
+        return textoIngresado;
     }
 
     private static int validarOpcionIngresada(int opcionIngresada, int cantidadOpciones) {
