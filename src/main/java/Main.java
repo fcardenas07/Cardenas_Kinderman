@@ -132,14 +132,14 @@ public class Registro {
     }
 
     public static int obtenerUltimoEspacio(String[][] registro) {
-        return registro.length - opa(registro);
+        return registro.length - retornarFilaVacia(registro);
     }
 
     public static boolean hayCupo(String[][] registro) {
-        return opa(registro) != 0;
+        return retornarFilaVacia(registro) != 0;
     }
 
-    public static int opa(String[][] registro) {
+    public static int retornarFilaVacia(String[][] registro) {
         for (int i = 0; i < registro.length; i++) {
             if (registro[i][0].equals("")) {
                 return registro.length - i;
