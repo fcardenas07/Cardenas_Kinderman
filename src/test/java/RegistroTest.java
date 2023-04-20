@@ -17,22 +17,27 @@ class RegistroTest {
 
     @Test
     void opcionCinco() {
+
     }
 
     @Test
     void opcionCuatro() {
+
     }
 
     @Test
     void opcionTres() {
+
     }
 
     @Test
     void opcionDos() {
+
     }
 
     @Test
     void agregarPersona(){
+        
     }
 
     @Test
