@@ -60,7 +60,8 @@ public class Registro {
     private static int contarPersonasTerceraEdad(String[][] registro) {
         int personasTerceraEdad = 0;
 
-        for (String[] persona : registro) {
+        for (int i = 0; i < cantidadDePersonasRegistradas(registro); i++) {
+            String[] persona = registro[i];
             int edad = Integer.parseInt(persona[2]);
             if (edad >= 60) {
                 personasTerceraEdad++;
@@ -71,9 +72,8 @@ public class Registro {
 
     private static int contarMenoresDeEdad(String[][] registro) {
         int menoresDeEdad = 0;
-        int personasRegistradas = cantidadDePersonasRegistradas(registro);
 
-        for (int i = 0; i < personasRegistradas; i++) {
+        for (int i = 0; i < cantidadDePersonasRegistradas(registro); i++) {
             int edad = Integer.parseInt(registro[i][2]);
             if (edad < 18) menoresDeEdad++;
         }
@@ -83,7 +83,8 @@ public class Registro {
     private static int contarMayoresDeEdad(String[][] registro) {
         int mayoresDeEdad = 0;
 
-        for (String[] persona : registro) {
+        for (int i = 0; i < cantidadDePersonasRegistradas(registro); i++) {
+            String[] persona = registro[i];
             int edad = Integer.parseInt(persona[2]);
             if (edad >= 18) mayoresDeEdad++;
         }
@@ -188,7 +189,10 @@ public class Registro {
     }
 
     public static int cantidadDePersonasRegistradas(String[][] registro) {
-        return registro.length - retornarFilaVacia(registro);
+        if (hayCupo(registro)) {
+            return retornarFilaVacia(registro);
+        }
+        return registro.length;
     }
 
     public static boolean hayCupo(String[][] registro) {
