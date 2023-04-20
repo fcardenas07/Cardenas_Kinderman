@@ -50,4 +50,13 @@ class RegistroTest {
         assertEquals(2,Registro.contarMayoresDeEdad(registro));
     }
 
+    @Test
+    void contarCasadosTest(){
+        assertEquals(2,Registro.contarCasados(registro));
+    }
+
+    void contarSolterosTest(){
+        assertEquals(1,Registro.contarSolteros(registro));
+    }
+
 }
