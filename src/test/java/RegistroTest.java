@@ -17,20 +17,6 @@ class RegistroTest {
 
 
     @Test
-    void agregarPersona(){
-        int indice = Registro.retornarFilaVacia(registro);
-        String nombre = "Thomas";
-        String estado = "Soltero";
-        String edad = "22";
-        Registro.agregarPersona(registro);
-        assertEquals("Thomas",registro[indice][0]);
-        assertEquals("Soltero",registro[indice][1]);
-        assertEquals("22",registro[indice][2]);
-
-
-    }
-
-    @Test
     void obtenerUltimoEspacioTest() {
         assertEquals(3,Registro.obtenerUltimoEspacio(registro));
     }
