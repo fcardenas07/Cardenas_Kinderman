@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -70,9 +71,9 @@ public class Registro {
 
     private static int contarMenoresDeEdad(String[][] registro) {
         int menoresDeEdad = 0;
-        int queSera = obtenerUltimoEspacio(registro);
+        int personasRegistradas = cantidadDePersonasRegistradas(registro);
 
-        for (int i = 0; i < queSera; i++) {
+        for (int i = 0; i < personasRegistradas; i++) {
             int edad = Integer.parseInt(registro[i][2]);
             if (edad < 18) menoresDeEdad++;
         }
@@ -91,7 +92,8 @@ public class Registro {
 
     private static void agregarPersona(String[][] registro) {
         if (hayCupo(registro)) {
-            int indiceDisponible = obtenerUltimoEspacio(registro);
+            int indiceDisponible = retornarFilaVacia(registro);
+
             String nombre = ingresarDato();
             String estadocivil = ingresarEstadoCivil();
             String edad = String.valueOf(validarEdad(convertirEdadAInt(ingresarDato())));
@@ -185,20 +187,21 @@ public class Registro {
                 """);
     }
 
-    public static int obtenerUltimoEspacio(String[][] registro) {
+    public static int cantidadDePersonasRegistradas(String[][] registro) {
         return registro.length - retornarFilaVacia(registro);
     }
 
     public static boolean hayCupo(String[][] registro) {
-        return retornarFilaVacia(registro) != 0;
+        int ultimaPosicion = registro.length - 1;
+        return Arrays.equals(registro[ultimaPosicion], new String[3]);
     }
 
     public static int retornarFilaVacia(String[][] registro) {
         for (int i = 0; i < registro.length; i++) {
-            if (registro[i][0] == null) {
-                return registro.length - i;
+            if (Arrays.equals(registro[i], new String[3])) {
+                return i;
             }
         }
-        return 0;
+        return -1;
     }
 }
