@@ -141,8 +141,7 @@ public class Registro {
                 Seleccione su estado civil:
                 1. Casado/a
                 2. Soltero/a
-                3. Otro
-                """);
+                3. Otro""");
     }
 
     public static boolean noEsEdadValida(int edad) {
